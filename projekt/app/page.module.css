@@ -1,0 +1,212 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.hero {
+  width: 100%;
+  padding: 8rem 1.5rem;
+  text-align: center;
+  background: radial-gradient(circle at 50% 0%, #fff1f2 0%, #ffffff 100%);
+  position: relative;
+}
+
+.title {
+  font-size: 4.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #111827;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.highlight {
+  color: #b91c1c;
+  position: relative;
+  display: inline-block;
+}
+
+.highlight::after {
+  content: "";
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  background-color: rgba(234, 179, 8, 0.2);
+  z-index: -1;
+  transform: skewX(-12deg);
+}
+
+.description {
+  font-size: 1.35rem;
+  margin-bottom: 3.5rem;
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  color: #4b5563;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.actions {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.buttonPrimary {
+  padding: 1rem 2.5rem;
+  background-color: #b91c1c;
+  color: white;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 25px -5px rgba(185, 28, 28, 0.4);
+  text-decoration: none;
+  font-size: 1.125rem;
+}
+
+.buttonPrimary:hover {
+  background-color: #991b1b;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 30px -10px rgba(185, 28, 28, 0.5);
+}
+
+.buttonSecondary {
+  padding: 1rem 2.5rem;
+  background-color: white;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+  font-size: 1.125rem;
+}
+
+.buttonSecondary:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.categories {
+  width: 100%;
+  max-width: 80rem;
+  padding: 6rem 2rem;
+}
+
+.sectionTitle {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 4rem;
+  text-align: center;
+  position: relative;
+}
+
+.sectionTitle::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: #b91c1c;
+  margin: 1rem auto 0;
+  border-radius: 2px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0,0,0,0.05);
+  text-decoration: none;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  border-color: rgba(185, 28, 28, 0.1);
+}
+
+.cardOverlaySneakers {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(239, 68, 68, 0.08), transparent 70%);
+  opacity: 1;
+}
+
+.cardOverlayWinter {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.08), transparent 70%);
+  opacity: 1;
+}
+
+.cardContent {
+  padding: 3.5rem 2.5rem;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+}
+
+.cardTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #111827;
+  transition: color 0.3s;
+  letter-spacing: -0.02em;
+}
+
+.card:hover .cardTitle {
+  color: #b91c1c;
+}
+
+.cardText {
+  color: #6b7280;
+  margin-bottom: 2rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.cardLink {
+  display: inline-flex;
+  align-items: center;
+  color: #b91c1c;
+  font-weight: 700;
+  font-size: 1.125rem;
+  transition: transform 0.3s;
+  margin-top: auto;
+}
+
+.card:hover .cardLink {
+  transform: translateX(0.5rem);
+}

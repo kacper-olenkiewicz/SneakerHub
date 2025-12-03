@@ -1,0 +1,226 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.hero {
+  width: 100%;
+  padding: 5rem 1.5rem;
+  background-color: #f9fafb;
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+}
+
+.highlight {
+  color: #b91c1c;
+}
+
+.heroText {
+  font-size: 1.25rem;
+  color: #4b5563;
+  max-width: 48rem;
+  margin: 0 auto;
+  line-height: 1.625;
+}
+
+.storySection {
+  width: 100%;
+  max-width: 72rem;
+  padding: 4rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .storySection {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.imageContainer {
+  position: relative;
+  height: 24rem;
+  width: 100%;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  background-color: #e5e7eb;
+}
+
+.imagePlaceholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, #fee2e2, #e5e7eb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+
+.placeholderText {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.storyTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.storyText {
+  color: white;
+  margin-bottom: 1rem;
+  line-height: 1.625;
+}
+
+.valuesSection {
+  width: 100%;
+  background-color: #b91c1c;
+  color: white;
+  padding: 4rem 1.5rem;
+}
+
+.valuesContainer {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.valuesTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .valuesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.valueCard {
+  padding: 1.5rem;
+  background-color: #991b1b;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.valueCard:hover {
+  transform: translateY(-0.25rem);
+}
+
+.valueIcon {
+  font-size: 2.25rem;
+  margin-bottom: 1rem;
+}
+
+.valueCardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.valueCardText {
+  color: white;
+}
+
+.contactSection {
+  width: 100%;
+  max-width: 56rem;
+  padding: 5rem 1.5rem;
+  text-align: center;
+}
+
+.contactTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+}
+
+.contactText {
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.contactGrid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  text-align: left;
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .contactGrid {
+    flex-direction: row;
+  }
+}
+
+.contactCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
+}
+
+.contactIcon {
+  background-color: #fee2e2;
+  padding: 0.75rem;
+  border-radius: 9999px;
+  color: #b91c1c;
+}
+
+.contactCardTitle {
+  font-weight: 700;
+  color: #111827;
+}
+
+.contactCardText {
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
+.contactButton {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background-color: #111827;
+  color: white;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+}
+
+.contactButton:hover {
+  background-color: #1f2937;
+}
