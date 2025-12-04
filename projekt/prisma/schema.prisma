@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+// prisma/schema.prisma
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  // Wartości hasła przechowujemy zahashowane!
+  passwordHash String
+  orders Order[]
+  // Dodatkowe pola...
+}
+
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String
+  price       Float
+  description String?
+  stock       Int
+  imageUrls   String[] // Lista URL-i do zdjęć butów
+  orderItems OrderItem[]
+}
+
+model Order {
+  id      Int       @id @default(autoincrement())
+  userId  Int
+  total   Float
+  status  String    @default("PENDING") // Status: PENDING, SHIPPED, DELIVERED, CANCELLED
+  createdAt DateTime @default(now())
+
+  user       User        @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  priceAtPurchase Float // Cena produktu w momencie zakupu (na wypadek zmian cen)
+
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}

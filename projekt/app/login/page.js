@@ -12,7 +12,7 @@ export default function LogIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
+    
     console.log("Login:", { email, password });
     alert("Login functionality would go here!");
   };
