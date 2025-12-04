@@ -10,6 +10,9 @@
   padding: 5rem 1.5rem;
   background-color: #f9fafb;
   text-align: center;
+  border-radius: 2rem;
+  margin: 2rem auto;
+  box-shadow: 0 25px 50px -20px rgba(15, 23, 42, 0.25);
 }
 
 .heroTitle {
@@ -31,14 +34,33 @@
   line-height: 1.625;
 }
 
+.storyRow {
+  width: 100%;
+  max-width: 82rem;
+  margin: 2.5rem auto;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1024px) {
+  .storyRow {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  }
+}
+
 .storySection {
   width: 100%;
-  max-width: 72rem;
   padding: 4rem 1.5rem;
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
   align-items: center;
+  background: linear-gradient(135deg, #111827, #1f2937);
+  border-radius: 2rem;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.5);
 }
 
 @media (min-width: 768px) {
@@ -51,7 +73,7 @@
   position: relative;
   height: 24rem;
   width: 100%;
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   overflow: hidden;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   background-color: #e5e7eb;
@@ -85,11 +107,83 @@
   line-height: 1.625;
 }
 
+.contactSection {
+  width: 100%;
+  padding: 3rem 2.25rem;
+  text-align: left;
+  background: #f8fafc;
+  border-radius: 1.75rem;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  box-shadow: 0 25px 45px -35px rgba(15, 23, 42, 0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.contactTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.contactText {
+  color: #475569;
+  margin-bottom: 1.5rem;
+}
+
+.contactGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .contactGrid {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.contactCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.1rem;
+  background-color: #ffffff;
+  border-radius: 1.25rem;
+  box-shadow: 0 12px 30px -22px rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  flex: 1 1 13rem;
+  min-width: 13rem;
+}
+
+.contactIcon {
+  background-color: rgba(185, 28, 28, 0.08);
+  padding: 0.65rem;
+  border-radius: 9999px;
+  color: #b91c1c;
+}
+
+.contactCardTitle {
+  font-weight: 700;
+  color: #111827;
+}
+
+.contactCardText {
+  color: #4b5563;
+  font-size: 0.875rem;
+}
+
 .valuesSection {
   width: 100%;
   background-color: #b91c1c;
   color: white;
   padding: 4rem 1.5rem;
+  border-radius: 2rem;
+  margin: 2rem auto;
+  max-width: 80rem;
+  box-shadow: 0 30px 60px -30px rgba(185, 28, 28, 0.5);
 }
 
 .valuesContainer {
@@ -120,7 +214,7 @@
 .valueCard {
   padding: 1.5rem;
   background-color: #991b1b;
-  border-radius: 0.75rem;
+  border-radius: 1.25rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
 }
@@ -144,83 +238,21 @@
   color: white;
 }
 
-.contactSection {
-  width: 100%;
-  max-width: 56rem;
-  padding: 5rem 1.5rem;
-  text-align: center;
-}
-
-.contactTitle {
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 1.5rem;
-}
-
-.contactText {
-  color: white;
-  margin-bottom: 2rem;
-}
-
-.contactGrid {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 2.5rem;
-  text-align: left;
-  max-width: 42rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-@media (min-width: 768px) {
-  .contactGrid {
-    flex-direction: row;
-  }
-}
-
-.contactCard {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1rem;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  border: 1px solid #f3f4f6;
-}
-
-.contactIcon {
-  background-color: #fee2e2;
-  padding: 0.75rem;
-  border-radius: 9999px;
-  color: #b91c1c;
-}
-
-.contactCardTitle {
-  font-weight: 700;
-  color: #111827;
-}
-
-.contactCardText {
-  color: #4b5563;
-  font-size: 0.875rem;
-}
 
 .contactButton {
   display: inline-block;
-  padding: 0.75rem 2rem;
-  background-color: #111827;
-  color: white;
+  padding: 0.75rem 2.1rem;
+  background-color: #b91c1c;
+  color: #fff;
   font-weight: 600;
   border-radius: 9999px;
-  transition: all 0.3s;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 10px 25px -18px rgba(185, 28, 28, 0.55);
   text-decoration: none;
+  align-self: center;
 }
 
 .contactButton:hover {
-  background-color: #1f2937;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 32px -20px rgba(185, 28, 28, 0.65);
 }

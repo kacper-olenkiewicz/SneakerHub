@@ -8,25 +8,73 @@
 
 .hero {
   width: 100%;
-  padding: 8rem 1.5rem;
-  text-align: center;
-  background: radial-gradient(circle at 50% 0%, #fff1f2 0%, #ffffff 100%);
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
+  overflow: hidden;
+  padding: 0;
+  margin: 2rem;
+  border-radius: 3rem;
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.7);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.videoBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  border-radius: inherit;
+  filter: drop-shadow(0 45px 50px rgba(0, 0, 0, 0.5));
+  transform: scale(1.02);
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.45) 100%);
+  z-index: 2;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  max-width: 60rem;
 }
 
 .title {
   font-size: 4.5rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
-  color: #111827;
+  color: white;
   letter-spacing: -0.03em;
   line-height: 1.1;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
 }
 
 .highlight {
   color: #b91c1c;
   position: relative;
   display: inline-block;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
 }
 
 .highlight::after {
@@ -36,7 +84,7 @@
   left: 0;
   width: 100%;
   height: 12px;
-  background-color: rgba(234, 179, 8, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
   z-index: -1;
   transform: skewX(-12deg);
 }
@@ -47,9 +95,10 @@
   max-width: 48rem;
   margin-left: auto;
   margin-right: auto;
-  color: #4b5563;
+  color: #e5e7eb;
   line-height: 1.7;
   font-weight: 400;
+  text-shadow: 0 5px 15px rgba(0, 0, 0, 0.8);
 }
 
 .actions {
@@ -105,7 +154,7 @@
 .sectionTitle {
   font-size: 2.5rem;
   font-weight: 800;
-  color: white;
+  color: #ffffff;
   margin-bottom: 4rem;
   text-align: center;
   position: relative;
@@ -118,7 +167,7 @@
   height: 4px;
   background-color: #b91c1c;
   margin: 1rem auto 0;
-  border-radius: 2px;
+  border-radius: 9999px;
 }
 
 .grid {

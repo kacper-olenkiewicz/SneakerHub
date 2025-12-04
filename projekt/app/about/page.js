@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./page.module.css";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -15,21 +16,51 @@ export default function About() {
       </section>
 
       {/* Our Story Section */}
-      <section className={styles.storySection}>
-        <div className={styles.imageContainer}>
-           {/* Placeholder for an image */}
-           <div className={styles.imagePlaceholder}>
-             <span className={styles.placeholderText}>Store Interior Image</span>
-           </div>
+      <section className={styles.storyRow}>
+        <div className={styles.storySection}>
+          <div className={styles.imageContainer}>
+             <Image 
+               src="/about/bud.png" 
+               alt="Store Interior" 
+               fill 
+               style={{ objectFit: "cover" }}
+             />
+          </div>
+          <div>
+            <h2 className={styles.storyTitle}>Our Story</h2>
+            <p className={styles.storyText}>
+              Founded in 2023, SneakerHub began with a simple mission: to make exclusive and high-quality sneakers accessible to everyone. What started as a small garage project has grown into a premier destination for sneakerheads and fashion enthusiasts alike.
+            </p>
+            <p className={styles.storyText}>
+              We believe that every pair of shoes tells a story. Whether you're looking for the latest hype drop, a comfortable pair for your daily commute, or winter-ready boots, we curate our collection with passion and expertise.
+            </p>
+          </div>
         </div>
-        <div>
-          <h2 className={styles.storyTitle}>Our Story</h2>
-          <p className={styles.storyText}>
-            Founded in 2023, SneakerHub began with a simple mission: to make exclusive and high-quality sneakers accessible to everyone. What started as a small garage project has grown into a premier destination for sneakerheads and fashion enthusiasts alike.
+
+        <div className={styles.contactSection}>
+          <h2 className={styles.contactTitle}>Get in Touch</h2>
+          <p className={styles.contactText}>
+            Have questions about a product or your order? Our team is here to help you every step of the way.
           </p>
-          <p className={styles.storyText}>
-            We believe that every pair of shoes tells a story. Whether you're looking for the latest hype drop, a comfortable pair for your daily commute, or winter-ready boots, we curate our collection with passion and expertise.
-          </p>
+          <div className={styles.contactGrid}>
+              <div className={styles.contactCard}>
+                  <div className={styles.contactIcon}></div>
+                  <div>
+                      <h4 className={styles.contactCardTitle}>Visit Us</h4>
+                      <p className={styles.contactCardText}>123 Sneaker Street<br/>Warsaw, PL 00-001</p>
+                  </div>
+              </div>
+              <div className={styles.contactCard}>
+                  <div className={styles.contactIcon}></div>
+                  <div>
+                      <h4 className={styles.contactCardTitle}>Email Us</h4>
+                      <p className={styles.contactCardText}>support@sneakerhub.com<br/>partners@sneakerhub.com</p>
+                  </div>
+              </div>
+          </div>
+          <Link href="/contact" className={styles.contactButton}>
+            Go to Contact Page
+          </Link>
         </div>
       </section>
 
@@ -57,32 +88,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Contact Preview Section */}
-      <section className={styles.contactSection}>
-        <h2 className={styles.contactTitle}>Get in Touch</h2>
-        <p className={styles.contactText}>
-          Have questions about a product or your order? Our team is here to help you every step of the way.
-        </p>
-        <div className={styles.contactGrid}>
-            <div className={styles.contactCard}>
-                <div className={styles.contactIcon}></div>
-                <div>
-                    <h4 className={styles.contactCardTitle}>Visit Us</h4>
-                    <p className={styles.contactCardText}>123 Sneaker Street<br/>Warsaw, PL 00-001</p>
-                </div>
-            </div>
-            <div className={styles.contactCard}>
-                <div className={styles.contactIcon}></div>
-                <div>
-                    <h4 className={styles.contactCardTitle}>Email Us</h4>
-                    <p className={styles.contactCardText}>support@sneakerhub.com<br/>partners@sneakerhub.com</p>
-                </div>
-            </div>
-        </div>
-        <Link href="/contact" className={styles.contactButton}>
-          Go to Contact Page
-        </Link>
-      </section>
+      {/* Contact preview now sits beside Our Story */}
     </div>
   );
 }
