@@ -2,7 +2,9 @@
 
 SneakerHub to pełna aplikacja e-commerce w Next.js App Router, która łączy publiczną witrynę produktową z panelem użytkownika i zapleczem dla pracowników. Klienci przeglądają sneakersy i buty zimowe, dodają produkty do koszyka oraz składają zamówienia. Pracownicy zarządzają magazynem i zamówieniami bezpośrednio z przeglądarki.
 
-<a href="https://sneaker-hub-peach.vercel.app/" target="_blank" rel="noopener noreferrer"><button type="button">Gotowa Strona</button></a>
+<a href="https://sneaker-hub-peach.vercel.app/" target="_blank" rel="noreferrer noopener" title="Otwórz SneakerHub w nowej karcie">
+    Link do Strony
+</a>
 ---
 
 
