@@ -4,7 +4,6 @@ SneakerHub to pełna aplikacja e-commerce w Next.js App Router, która łączy p
 
 ---
 
-## Jak uruchomić projekt lokalnie
 
 ### Wymagania
 
