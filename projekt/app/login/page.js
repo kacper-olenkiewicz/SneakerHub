@@ -5,16 +5,70 @@
 import styles from "./page.module.css";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+const normalizeIdentifier = (input) => {
+  const trimmed = input.trim().toLowerCase();
+  if (trimmed === "admin") {
+    return "admin@sneakerhub.com";
+  }
+  return trimmed;
+};
+
+const isValidEmail = (value) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+};
 
 export default function LogIn() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+    const normalizedEmail = normalizeIdentifier(email);
+
+    if (normalizedEmail !== "admin@sneakerhub.com" && !isValidEmail(normalizedEmail)) {
+      setError("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
     
-    console.log("Login:", { email, password });
-    alert("Login functionality would go here!");
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: normalizedEmail, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Save user data to localStorage
+        localStorage.setItem('user', JSON.stringify(data.user));
+        window.dispatchEvent(new Event('auth-change'));
+        
+        // Redirect based on role
+        if (data.user.role === 'WORKER') {
+          router.push('/worker');
+        } else {
+          router.push('/dashboard');
+        }
+      } else {
+        setError(data.error || 'Login failed');
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError('An error occurred during login');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -29,7 +83,7 @@ export default function LogIn() {
               Email Address
             </label>
             <input
-              type="email"
+              type="text"
               id="email"
               className={styles.input}
               placeholder="john@example.com"
@@ -54,13 +108,19 @@ export default function LogIn() {
             />
           </div>
 
-          <button type="submit" className={styles.button}>
-            Sign In
+          {error && (
+            <div className={styles.error}>
+              {error}
+            </div>
+          )}
+
+          <button type="submit" className={styles.button} disabled={loading}>
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
         <div className={styles.footer}>
-          Don't have an account?
+          Don&apos;t have an account?
           <Link href="/register" className={styles.link}>
             Register
           </Link>

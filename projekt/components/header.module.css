@@ -101,3 +101,35 @@
   box-shadow: 0 10px 15px -3px rgba(185, 28, 28, 0.4);
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
 }
+
+.dashboardButton {
+  border: 2px solid rgba(153, 27, 27, 0.4);
+  color: #991b1b;
+  padding: 0.5rem 1.4rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dashboardButton:hover {
+  background-color: #991b1b;
+  color: #ffffff;
+  border-color: #991b1b;
+}
+
+.logoutButton {
+  background: none;
+  border: none;
+  color: #4b5563;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+
+.logoutButton:hover {
+  color: #991b1b;
+  background-color: rgba(153, 27, 27, 0.08);
+}

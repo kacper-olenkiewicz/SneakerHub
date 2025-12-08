@@ -32,7 +32,7 @@ export default function About() {
               Founded in 2023, SneakerHub began with a simple mission: to make exclusive and high-quality sneakers accessible to everyone. What started as a small garage project has grown into a premier destination for sneakerheads and fashion enthusiasts alike.
             </p>
             <p className={styles.storyText}>
-              We believe that every pair of shoes tells a story. Whether you're looking for the latest hype drop, a comfortable pair for your daily commute, or winter-ready boots, we curate our collection with passion and expertise.
+              We believe that every pair of shoes tells a story. Whether you&apos;re looking for the latest hype drop, a comfortable pair for your daily commute, or winter-ready boots, we curate our collection with passion and expertise.
             </p>
           </div>
         </div>
