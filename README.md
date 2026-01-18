@@ -1,100 +1,237 @@
-## SneakerHub
+# 👟 SneakerHub
 
-SneakerHub to pełna aplikacja e-commerce w Next.js App Router, która łączy publiczną witrynę produktową z panelem użytkownika i zapleczem dla pracowników. Klienci przeglądają sneakersy i buty zimowe, dodają produkty do koszyka oraz składają zamówienia. Pracownicy zarządzają magazynem i zamówieniami bezpośrednio z przeglądarki.
+<div align="center">
 
-<a href="https://sneaker-hub-peach.vercel.app/" target="blank" rel="noreferrer noopener" title="Otwórz SneakerHub w nowej karcie">
-    Link do Strony
-</a>
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)
+![Prisma](https://img.shields.io/badge/Prisma-5.22-2D3748?style=for-the-badge&logo=prisma)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
 
+**Nowoczesny sklep internetowy z obuwiem sportowym i zimowym**
 
+[🌐 Demo na żywo](https://sneaker-hub-peach.vercel.app/) • [📋 Funkcjonalności](#-funkcjonalności) • [🚀 Instalacja](#-instalacja)
+
+</div>
+
+---
+
+## 📖 O projekcie
+
+SneakerHub to kompletna aplikacja e-commerce zbudowana w **Next.js 16 App Router**. Łączy publiczną witrynę sklepową z panelem użytkownika oraz zapleczem administracyjnym dla pracowników.
+
+### Dla kogo?
+
+- **Klienci** — przeglądają katalog, dodają produkty do koszyka, składają zamówienia
+- **Pracownicy** — zarządzają produktami, stanami magazynowymi i zamówieniami
+
+---
+
+## ✨ Funkcjonalności
+
+### 🛒 Strefa klienta
+| Funkcja | Opis |
+|---------|------|
+| Katalog produktów | Przeglądanie sneakersów i butów zimowych z filtrowaniem po kategorii |
+| Koszyk | Dodawanie/usuwanie produktów, kontrola dostępności (stock) |
+| System kont | Rejestracja, logowanie z bezpieczną sesją (httpOnly cookies) |
+| Historia zamówień | Podgląd statusu i szczegółów wszystkich zamówień |
+| Responsywny design | Pełna obsługa na urządzeniach mobilnych |
+
+### 👷 Panel pracownika
+| Funkcja | Opis |
+|---------|------|
+| Zarządzanie produktami | Dodawanie, edycja, usuwanie produktów |
+| Kontrola stanów | Aktualizacja ilości w magazynie |
+| Obsługa zamówień | Przeglądanie, tworzenie i anulowanie zamówień |
+| Ręczne zamówienia | Modal do tworzenia zamówień dla klientów |
+
+### 🔐 Bezpieczeństwo
+- Hasła hashowane algorytmem **bcrypt**
+- Sesje użytkowników w **httpOnly cookies** (niedostępne dla JavaScript)
+- Walidacja ról (USER / WORKER)
+- Ochrona endpointów API
+
+---
+
+## 🛠️ Stack technologiczny
+
+| Warstwa | Technologie |
+|---------|-------------|
+| **Frontend** | Next.js 16, React 19, CSS Modules, Tailwind CSS 4 |
+| **Backend** | Next.js API Routes (App Router) |
+| **Baza danych** | PostgreSQL + Prisma ORM 5.22 |
+| **Autentykacja** | bcryptjs, httpOnly cookies |
+| **Deployment** | Vercel |
+
+---
+
+## 🚀 Instalacja
 
 ### Wymagania
-
 - Node.js ≥ 18
+- PostgreSQL (lokalnie lub w chmurze, np. Neon, Supabase)
 - npm / pnpm / yarn
-- Dostępna baza danych PostgreSQL
 
-### Kroki
+### Krok po kroku
 
-1. **Zainstaluj zależności**
-	```bash
-	npm install
-	```
-2. **Skonfiguruj zmienne środowiskowe** – utwórz plik `.env` z wpisem:
-	```bash
-	DATABASE_URL="postgresql://user:password@host:port/database"
-	```
-3. **Zsynchronizuj Prisma**
-	```bash
-	npx prisma generate
-	npx prisma db push
-	```
-4. **Uruchom serwer dev**
-	```bash
-	npm run dev
-	```
-5. **Lint (opcjonalnie)**: `npm run lint`
+```bash
+# 1. Sklonuj repozytorium
+git clone https://github.com/your-username/sneakerhub.git
+cd sneakerhub/projekt
+
+# 2. Zainstaluj zależności
+npm install
+
+# 3. Skonfiguruj zmienne środowiskowe
+cp .env.example .env
+# Edytuj .env i ustaw DATABASE_URL
+```
+
+```env
+# .env
+DATABASE_URL="postgresql://user:password@host:port/database"
+```
+
+```bash
+# 4. Zainicjuj bazę danych
+npx prisma generate
+npx prisma db push
+
+# 5. (Opcjonalnie) Dodaj konto admina
+npx prisma db seed
+
+# 6. Uruchom serwer deweloperski
+npm run dev
+```
+
+Aplikacja dostępna pod: **http://localhost:3000**
 
 ---
 
-## Jak działa aplikacja
-
-- **Landing i katalogi (`/`, `/buy`, `/sneakers`, `/winter`)** – produkty ładowane z API/Prisma. Wyświetlana liczba dostępnych par, przycisk “Add to Cart” jest blokowany, gdy stock <= 0.
-- **Koszyk i konto (`/dashboard`)** – lokalny koszyk synchronizowany przez `localStorage`. Użytkownik widzi historię zamówień, aktualny koszyk i może złożyć nowe zamówienie (POST `/api/orders`).
-- **Panel pracownika (`/worker`)** – weryfikacja roli `WORKER`. Formularz dodawania nowych produktów (nazwa, cena, kategoria, obraz, stock), tabela inwentarza z usuwaniem, lista zamówień z możliwością kasowania i modal „Create Order”.
-- **API** – `/api/products` (GET/POST/DELETE) oraz `/api/orders` (GET/POST/DELETE) obsługują CRUD dla pracowników i klientów. `/api/auth/login` zwraca dane użytkownika i rolę, które są zapisywane w `localStorage`.
-
-Flow użytkownika: rejestracja/logowanie → przegląd produktów → dodanie do koszyka → checkout → podgląd zamówień. Pracownik loguje się i przełącza zakładki „Products” / „Orders”.
-
----
-
-## Struktura i kluczowe pliki
+## 📁 Struktura projektu
 
 ```
 projekt/
-├─ app/
-│  ├─ layout.js             # globalny layout z <Header /> (nawigacja, BrandPattern)
-│  ├─ page.js               # landing page
-│  ├─ buy/page.js           # pełny katalog produktów
-│  ├─ sneakers/page.js      # kolekcja sneakersów
-│  ├─ winter/page.js        # kolekcja zimowa
-│  ├─ dashboard/page.js     # konto użytkownika + koszyk
-│  ├─ worker/page.js        # panel pracownika
-│  └─ api/
-│     ├─ auth/login/route.js   # logowanie
-│     ├─ products/route.js     # CRUD produktów
-│     └─ orders/route.js       # CRUD zamówień
-├─ components/
-│  └─ header.js            # nawigacja z obsługą ról i wylogowania
-├─ lib/
-│  ├─ prisma.js            # inicjalizacja Prisma Client
-│  ├─ cartStorage.js       # logika koszyka + blokady stocku
-│  └─ defaultProducts.js   # fallback produktów offline
-├─ prisma/
-│  └─ schema.prisma        # modele: User, Product, Order, OrderItem
-└─ public/                 # grafiki (logo, sneakers/, winter/)
+├── app/
+│   ├── layout.js                 # Główny layout z nawigacją
+│   ├── page.js                   # Strona główna (landing)
+│   ├── buy/                      # Pełny katalog produktów
+│   ├── sneakers/                 # Kolekcja sneakersów
+│   ├── winter/                   # Kolekcja zimowa
+│   ├── login/                    # Logowanie
+│   ├── register/                 # Rejestracja
+│   ├── dashboard/                # Panel użytkownika + koszyk
+│   ├── worker/                   # Panel pracownika
+│   └── api/
+│       ├── auth/
+│       │   ├── login/            # POST - logowanie
+│       │   ├── register/         # POST - rejestracja
+│       │   └── session/          # GET/DELETE - sesja
+│       ├── products/             # GET/POST/DELETE - produkty
+│       └── orders/               # GET/POST/DELETE - zamówienia
+├── components/
+│   ├── header.js                 # Nawigacja z obsługą ról
+│   ├── footer.js                 # Stopka
+│   └── BrandPattern.js           # Dekoracyjny wzór
+├── lib/
+│   ├── prisma.js                 # Klient Prisma
+│   ├── cartStorage.js            # Logika koszyka (localStorage)
+│   └── defaultProducts.js        # Fallback dla trybu offline
+├── prisma/
+│   ├── schema.prisma             # Modele bazy danych
+│   └── seed.js                   # Seeder (konto admin)
+└── public/                       # Statyczne zasoby (logo, zdjęcia)
 ```
 
 ---
 
-## Technologie i biblioteki
+## 🗄️ Model bazy danych
 
-- **Next.js 13/14 App Router** (React 18, Turbopack w dev)
-- **Prisma ORM 5.22** + **PostgreSQL**
-- **ESLint** (`eslint-config-next/core-web-vitals`)
-- **bcryptjs** (hashowanie haseł)
-- **localStorage** (sesja użytkownika, koszyk)
-- **Next/Image** (zdalne i lokalne obrazy produktów)
+```
+┌─────────────┐       ┌─────────────┐       ┌─────────────┐
+│    User     │       │    Order    │       │   Product   │
+├─────────────┤       ├─────────────┤       ├─────────────┤
+│ id          │──┐    │ id          │    ┌──│ id          │
+│ email       │  │    │ userId      │←───┘  │ name        │
+│ name        │  └───→│ total       │       │ price       │
+│ passwordHash│       │ status      │       │ category    │
+│ role        │       │ createdAt   │       │ stock       │
+│ createdAt   │       └──────┬──────┘       │ image       │
+└─────────────┘              │              └──────┬──────┘
+                             │                     │
+                      ┌──────▼──────┐              │
+                      │  OrderItem  │              │
+                      ├─────────────┤              │
+                      │ id          │              │
+                      │ orderId     │←─────────────┘
+                      │ productId   │
+                      │ quantity    │
+                      │ priceAtPurchase│
+                      └─────────────┘
+```
 
 ---
 
-## Baza danych
+## 🔑 API Endpoints
 
-1. Utwórz bazę PostgreSQL i ustaw `DATABASE_URL` w `.env`.
-2. Modele w `prisma/schema.prisma` (relacje 1‑n i n‑1).
-3. `npx prisma generate` – generuje klienta.
-4. `npx prisma db push` – synchronizuje schemat z bazą.
-5. Dodaj produkty startowe przez panel pracownika lub bezpośrednio API (`POST /api/products`).
+| Metoda | Endpoint | Opis |
+|--------|----------|------|
+| `POST` | `/api/auth/register` | Rejestracja nowego użytkownika |
+| `POST` | `/api/auth/login` | Logowanie (ustawia httpOnly cookie) |
+| `GET` | `/api/auth/session` | Pobierz dane zalogowanego użytkownika |
+| `DELETE` | `/api/auth/session` | Wylogowanie |
+| `GET` | `/api/products` | Lista wszystkich produktów |
+| `POST` | `/api/products` | Dodaj produkt (wymaga roli WORKER) |
+| `DELETE` | `/api/products?id=X` | Usuń produkt |
+| `GET` | `/api/orders` | Lista zamówień (filtrowana po userId) |
+| `POST` | `/api/orders` | Utwórz nowe zamówienie |
+| `DELETE` | `/api/orders?id=X` | Usuń zamówienie |
 
 ---
+
+## 👤 Domyślne konta
+
+Po uruchomieniu seedera dostępne jest konto administratora:
+
+| Email | Hasło | Rola |
+|-------|-------|------|
+| `admin@sneakerhub.com` | `admin` | WORKER |
+
+---
+
+## 📜 Skrypty npm
+
+| Skrypt | Opis |
+|--------|------|
+| `npm run dev` | Uruchom serwer deweloperski |
+| `npm run build` | Zbuduj aplikację produkcyjną |
+| `npm run start` | Uruchom zbudowaną aplikację |
+| `npm run lint` | Sprawdź kod ESLint |
+
+---
+
+## 🚢 Deployment
+
+Aplikacja jest gotowa do wdrożenia na **Vercel**:
+
+1. Połącz repozytorium z Vercel
+2. Ustaw zmienną środowiskową `DATABASE_URL`
+3. Deploy!
+
+Alternatywnie możesz użyć Docker, Railway, Render lub dowolnej platformy wspierającej Next.js.
+
+---
+
+## 📄 Licencja
+
+Ten projekt jest udostępniony na licencji MIT. Zobacz plik [LICENSE](LICENSE) po szczegóły.
+
+---
+
+<div align="center">
+
+**Zbudowane z ❤️ przy użyciu Next.js i Prisma**
+
+</div>
 
