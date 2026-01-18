@@ -50,8 +50,7 @@ export default function LogIn() {
       const data = await response.json();
 
       if (response.ok) {
-        // Save user data to localStorage
-        localStorage.setItem('user', JSON.stringify(data.user));
+        // Dispatch auth-change event (session is now in httpOnly cookie)
         window.dispatchEvent(new Event('auth-change'));
         
         // Redirect based on role

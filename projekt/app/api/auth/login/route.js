@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { prisma } from '../../../../lib/prisma';
 import bcrypt from 'bcryptjs';
+
+const SESSION_COOKIE_NAME = 'session';
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 export async function POST(request) {
   try {
@@ -39,6 +43,16 @@ export async function POST(request) {
 
     // Return user data (without password)
     const { passwordHash: _, ...userWithoutPassword } = user;
+
+    // Set httpOnly cookie with session data
+    const cookieStore = await cookies();
+    cookieStore.set(SESSION_COOKIE_NAME, JSON.stringify(userWithoutPassword), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: COOKIE_MAX_AGE,
+      path: '/'
+    });
 
     return NextResponse.json(
       { 

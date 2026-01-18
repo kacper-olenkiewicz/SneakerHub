@@ -2,66 +2,55 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useMemo, useSyncExternalStore } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './header.module.css';
 
-const readUserSnapshot = () => {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  try {
-    return window.localStorage.getItem('user');
-  } catch (error) {
-    console.error('Failed to read user session', error);
-    return null;
-  }
-};
-
-const subscribeToUserChanges = (callback) => {
-  if (typeof window === 'undefined') {
-    return () => {};
-  }
-
-  const handleChange = () => callback();
-
-  window.addEventListener('storage', handleChange);
-  window.addEventListener('auth-change', handleChange);
-  window.addEventListener('focus', handleChange);
-
-  return () => {
-    window.removeEventListener('storage', handleChange);
-    window.removeEventListener('auth-change', handleChange);
-    window.removeEventListener('focus', handleChange);
-  };
-};
-
 export default function Header() {
   const router = useRouter();
-  const userSnapshot = useSyncExternalStore(
-    subscribeToUserChanges,
-    readUserSnapshot,
-    () => null
-  );
-  const user = useMemo(() => {
-    if (!userSnapshot) {
-      return null;
-    }
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  const fetchSession = useCallback(async () => {
     try {
-      return JSON.parse(userSnapshot);
+      const response = await fetch('/api/auth/session');
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+      } else {
+        setUser(null);
+      }
     } catch (error) {
-      console.error('Failed to parse user snapshot', error);
-      return null;
+      console.error('Failed to fetch session:', error);
+      setUser(null);
+    } finally {
+      setLoading(false);
     }
-  }, [userSnapshot]);
+  }, []);
 
-  const handleLogout = () => {
-    window.localStorage.removeItem('user');
-    window.localStorage.removeItem('cart');
-    window.dispatchEvent(new Event('auth-change'));
-    router.push('/login');
+  useEffect(() => {
+    fetchSession();
+
+    const handleAuthChange = () => fetchSession();
+    window.addEventListener('auth-change', handleAuthChange);
+    window.addEventListener('focus', handleAuthChange);
+
+    return () => {
+      window.removeEventListener('auth-change', handleAuthChange);
+      window.removeEventListener('focus', handleAuthChange);
+    };
+  }, [fetchSession]);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/session', { method: 'DELETE' });
+      window.localStorage.removeItem('cart');
+      setUser(null);
+      window.dispatchEvent(new Event('auth-change'));
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const dashboardHref = user?.role === 'WORKER' ? '/worker' : '/dashboard';

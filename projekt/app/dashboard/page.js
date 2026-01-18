@@ -26,20 +26,31 @@ export default function UserDashboard() {
   const [orderFeedback, setOrderFeedback] = useState(null);
 
   useEffect(() => {
-    // Check if user is logged in
-    const userData = localStorage.getItem('user');
-    if (!userData) {
-      router.push('/login');
-      return;
-    }
-    
-    const parsedUser = JSON.parse(userData);
-    setUser(parsedUser);
-    setCart(getCartItems());
-    
-    // Fetch user orders
-    fetchOrders(parsedUser.id);
-    setLoading(false);
+    // Fetch session from API (httpOnly cookie)
+    const fetchSession = async () => {
+      try {
+        const response = await fetch('/api/auth/session');
+        if (response.ok) {
+          const data = await response.json();
+          if (!data.user) {
+            router.push('/login');
+            return;
+          }
+          setUser(data.user);
+          setCart(getCartItems());
+          fetchOrders(data.user.id);
+        } else {
+          router.push('/login');
+        }
+      } catch (error) {
+        console.error('Session fetch error:', error);
+        router.push('/login');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSession();
   }, [router]);
 
   useEffect(() => {
@@ -71,11 +82,15 @@ export default function UserDashboard() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    clearStoredCart();
-    window.dispatchEvent(new Event('auth-change'));
-    router.push('/login');
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/session', { method: 'DELETE' });
+      clearStoredCart();
+      window.dispatchEvent(new Event('auth-change'));
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const removeFromCart = (index) => {

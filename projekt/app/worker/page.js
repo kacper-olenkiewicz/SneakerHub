@@ -45,23 +45,35 @@ export default function WorkerDashboard() {
   const [orderFormError, setOrderFormError] = useState(null);
 
   useEffect(() => {
-    // Check if user is logged in and is a worker
-    const userData = localStorage.getItem('user');
-    if (!userData) {
-      router.push('/login');
-      return;
-    }
-    
-    const parsedUser = JSON.parse(userData);
-    
-    // Check if user has WORKER role
-    if (parsedUser.role !== 'WORKER') {
-      alert('Access denied. This page is for workers only.');
-      router.push('/dashboard');
-      return;
-    }
-    
-    setUser(parsedUser);
+    // Fetch session from API (httpOnly cookie)
+    const fetchSession = async () => {
+      try {
+        const response = await fetch('/api/auth/session');
+        if (response.ok) {
+          const data = await response.json();
+          if (!data.user) {
+            router.push('/login');
+            return;
+          }
+          
+          // Check if user has WORKER role
+          if (data.user.role !== 'WORKER') {
+            alert('Access denied. This page is for workers only.');
+            router.push('/dashboard');
+            return;
+          }
+          
+          setUser(data.user);
+        } else {
+          router.push('/login');
+        }
+      } catch (error) {
+        console.error('Session fetch error:', error);
+        router.push('/login');
+      }
+    };
+
+    fetchSession();
   }, [router]);
 
   useEffect(() => {
@@ -288,11 +300,15 @@ export default function WorkerDashboard() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    clearStoredCart();
-    window.dispatchEvent(new Event('auth-change'));
-    router.push('/login');
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/session', { method: 'DELETE' });
+      clearStoredCart();
+      window.dispatchEvent(new Event('auth-change'));
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   if (!user) {

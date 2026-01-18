@@ -1,5 +1,4 @@
 const CART_KEY = 'cart';
-const USER_KEY = 'user';
 
 const isBrowser = () => typeof window !== 'undefined';
 
@@ -109,9 +108,25 @@ const dispatchCartEvent = () => {
 };
 
 export const getStoredUser = () => {
+  // DEPRECATED: User session is now stored in httpOnly cookies
+  // Use fetchSession() from API instead
+  console.warn('getStoredUser() is deprecated. Session is now in httpOnly cookies.');
+  return null;
+};
+
+// Check if user is authenticated via API
+export const checkAuthentication = async () => {
   if (!isBrowser()) return null;
-  const raw = window.localStorage.getItem(USER_KEY);
-  return raw ? safeParse(raw, null) : null;
+  try {
+    const response = await fetch('/api/auth/session');
+    if (response.ok) {
+      const data = await response.json();
+      return data.user;
+    }
+    return null;
+  } catch {
+    return null;
+  }
 };
 
 export const getCartItems = () => {
@@ -161,13 +176,14 @@ const normalizeProduct = (product) => {
   };
 };
 
-export const addProductToCart = (product) => {
+export const addProductToCart = (product, isAuthenticated = true) => {
   if (!isBrowser()) {
     return { success: false, reason: 'NOT_READY' };
   }
 
-  const user = getStoredUser();
-  if (!user) {
+  // isAuthenticated should be checked before calling this function
+  // by using checkAuthentication() from the component
+  if (!isAuthenticated) {
     return { success: false, reason: 'NOT_AUTHENTICATED' };
   }
 

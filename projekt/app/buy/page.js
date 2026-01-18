@@ -3,7 +3,7 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { addProductToCart, getCartReservations, getProductStockKey } from "../../lib/cartStorage";
+import { addProductToCart, getCartReservations, getProductStockKey, checkAuthentication } from "../../lib/cartStorage";
 import defaultProducts from "../../lib/defaultProducts";
 
 const normalizeCategory = (category) => {
@@ -25,12 +25,26 @@ export default function Buy() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [reservations, setReservations] = useState({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     if (!feedback) return;
     const timer = setTimeout(() => setFeedback(null), 4000);
     return () => clearTimeout(timer);
   }, [feedback]);
+
+  useEffect(() => {
+    // Check authentication status
+    const checkAuth = async () => {
+      const user = await checkAuthentication();
+      setIsAuthenticated(!!user);
+    };
+    checkAuth();
+
+    const handleAuthChange = () => checkAuth();
+    window.addEventListener('auth-change', handleAuthChange);
+    return () => window.removeEventListener('auth-change', handleAuthChange);
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -74,7 +88,7 @@ export default function Buy() {
       return;
     }
 
-    const result = addProductToCart(product);
+    const result = addProductToCart(product, isAuthenticated);
 
     if (!result.success) {
       let message = 'Could not add product to cart. Please try again.';
