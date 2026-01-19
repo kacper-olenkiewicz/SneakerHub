@@ -115,3 +115,30 @@ export async function DELETE(request) {
     return NextResponse.json({ error: 'Failed to delete order' }, { status: 500 });
   }
 }
+
+export async function PATCH(request) {
+  try {
+    const body = await request.json();
+    const { id, status } = body || {};
+
+    const parsedId = Number(id);
+    if (!Number.isFinite(parsedId)) {
+      return NextResponse.json({ error: 'Order id is required' }, { status: 400 });
+    }
+
+    const allowedStatuses = ['PENDING', 'ACCEPTED', 'SHIPPED', 'DELIVERED', 'CANCELLED'];
+    if (!status || !allowedStatuses.includes(status)) {
+      return NextResponse.json({ error: 'Invalid status value' }, { status: 400 });
+    }
+
+    const updated = await prisma.order.update({
+      where: { id: parsedId },
+      data: { status }
+    });
+
+    return NextResponse.json(updated, { status: 200 });
+  } catch (error) {
+    console.error('Orders PATCH error:', error);
+    return NextResponse.json({ error: 'Failed to update order status' }, { status: 500 });
+  }
+}

@@ -32,6 +32,7 @@ export default function WorkerDashboard() {
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [ordersError, setOrdersError] = useState(null);
   const [ordersMessage, setOrdersMessage] = useState(null);
+  const [orderStatusUpdating, setOrderStatusUpdating] = useState(null);
   const [products, setProducts] = useState([]);
   const [productsLoading, setProductsLoading] = useState(false);
   const [productMessage, setProductMessage] = useState(null);
@@ -300,6 +301,36 @@ export default function WorkerDashboard() {
     }
   };
 
+
+  const handleOrderStatusUpdate = async (orderId, status) => {
+    setOrdersError(null);
+    setOrdersMessage(null);
+    setOrderStatusUpdating(orderId);
+
+    try {
+      const response = await fetch('/api/orders', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: orderId, status })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update order status');
+      }
+
+      setOrders((prev) =>
+        prev.map((order) => (order.id === orderId ? { ...order, status: data.status } : order))
+      );
+      setOrdersMessage(`Order #${orderId} updated to ${status}.`);
+    } catch (error) {
+      console.error('Status update error:', error);
+      setOrdersError('Could not update order status.');
+    } finally {
+      setOrderStatusUpdating(null);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/session', { method: 'DELETE' });
@@ -492,8 +523,7 @@ export default function WorkerDashboard() {
                 <tr>
                   <th>Order ID</th>
                   <th>Customer</th>
-                  <th>Product</th>
-                  <th>Quantity</th>
+                  <th>Items</th>
                   <th>Total</th>
                   <th>Status</th>
                   <th>Date</th>
@@ -522,22 +552,62 @@ export default function WorkerDashboard() {
                     <tr key={order.id}>
                       <td>#{order.id}</td>
                       <td>{order.user?.email || 'N/A'}</td>
-                      <td>{order.orderItems?.length || 0} items</td>
-                      <td>{order.orderItems?.reduce((sum, item) => sum + (item.quantity ?? 0), 0)}</td>
+                      <td>
+                        <div className={styles.itemsCell}>
+                          {(order.orderItems || []).map((item, index) => (
+                            <div key={`${order.id}-${index}`} className={styles.itemLine}>
+                              <span className={styles.itemName}>{item.productName || 'Item'}</span>
+                              <span className={styles.itemMeta}>
+                                x{item.quantity ?? 0} · ${Number(item.priceAtPurchase ?? 0).toFixed(2)}
+                              </span>
+                            </div>
+                          ))}
+                          {(!order.orderItems || order.orderItems.length === 0) && (
+                            <span className={styles.itemMeta}>No items</span>
+                          )}
+                        </div>
+                      </td>
                       <td>${Number(order.total ?? 0).toFixed(2)}</td>
                       <td>
-                        <span className={styles.status}>{order.status}</span>
+                        <span
+                          className={`${styles.status} ${styles[`status${order.status}`] || ''}`}
+                        >
+                          {order.status || 'UNKNOWN'}
+                        </span>
                       </td>
                       <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                       <td>
-                        <button
-                          type="button"
-                          className={styles.logoutButton}
-                          style={{ padding: '0.5rem 1rem' }}
-                          onClick={() => handleOrderDelete(order.id)}
-                        >
-                          Delete
-                        </button>
+                        <div className={styles.statusActions}>
+                          <button
+                            type="button"
+                            className={`${styles.statusButton} ${styles.statusButtonAccept}`}
+                            onClick={() => handleOrderStatusUpdate(order.id, 'ACCEPTED')}
+                            disabled={
+                              orderStatusUpdating === order.id ||
+                              order.status === 'ACCEPTED' ||
+                              order.status === 'SHIPPED'
+                            }
+                          >
+                            Accepted
+                          </button>
+                          <button
+                            type="button"
+                            className={`${styles.statusButton} ${styles.statusButtonShip}`}
+                            onClick={() => handleOrderStatusUpdate(order.id, 'SHIPPED')}
+                            disabled={orderStatusUpdating === order.id || order.status === 'SHIPPED'}
+                          >
+                            Shipped
+                          </button>
+                          <button
+                            type="button"
+                            className={styles.logoutButton}
+                            style={{ padding: '0.5rem 1rem' }}
+                            onClick={() => handleOrderDelete(order.id)}
+                            disabled={orderStatusUpdating === order.id}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))

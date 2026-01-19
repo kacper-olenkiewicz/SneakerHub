@@ -10,6 +10,14 @@ export default function Header() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const applyTheme = useCallback((theme) => {
+    if (typeof document === 'undefined') return;
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem('theme', theme);
+    setIsDarkMode(theme === 'dark');
+  }, []);
 
   const fetchSession = useCallback(async () => {
     try {
@@ -41,6 +49,18 @@ export default function Header() {
     };
   }, [fetchSession]);
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const storedTheme = window.localStorage.getItem('theme');
+    if (storedTheme === 'dark' || storedTheme === 'light') {
+      applyTheme(storedTheme);
+      return;
+    }
+
+    const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark ? 'dark' : 'light');
+  }, [applyTheme]);
+
   const handleLogout = async () => {
     try {
       await fetch('/api/auth/session', { method: 'DELETE' });
@@ -55,6 +75,7 @@ export default function Header() {
 
   const dashboardHref = user?.role === 'WORKER' ? '/worker' : '/dashboard';
   const dashboardLabel = user?.role === 'WORKER' ? 'Worker Panel' : 'Dashboard';
+  const themeLabel = isDarkMode ? 'Light mode' : 'Dark mode';
 
   return (
     <header className={styles.header}>
@@ -118,6 +139,22 @@ export default function Header() {
               </Link>
             </li>
           )}
+          <li className={styles.navItem}>
+            <button
+              type="button"
+              className={styles.themeToggle}
+              onClick={() => applyTheme(isDarkMode ? 'light' : 'dark')}
+              aria-label="Toggle dark mode"
+              title={themeLabel}
+            >
+              <span className={styles.toggleTrack}>
+                <span
+                  className={`${styles.toggleThumb} ${isDarkMode ? styles.toggleThumbActive : ''}`}
+                />
+              </span>
+              <span className={styles.toggleLabel}>{themeLabel}</span>
+            </button>
+          </li>
         </ul>
       </nav>
     </header>

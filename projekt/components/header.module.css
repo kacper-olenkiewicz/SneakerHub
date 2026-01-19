@@ -133,3 +133,53 @@
   color: #991b1b;
   background-color: rgba(153, 27, 27, 0.08);
 }
+
+.themeToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.35rem 0.5rem;
+  border-radius: 9999px;
+  color: #4b5563;
+  font-weight: 600;
+}
+
+.themeToggle:hover {
+  color: #991b1b;
+  background-color: rgba(153, 27, 27, 0.08);
+}
+
+.toggleTrack {
+  width: 2.5rem;
+  height: 1.4rem;
+  background: #e5e7eb;
+  border-radius: 9999px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem;
+  transition: background 0.2s ease;
+}
+
+.toggleThumb {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+.toggleThumbActive {
+  transform: translateX(1rem);
+  background: #111827;
+}
+
+.toggleLabel {
+  font-size: 0.85rem;
+}
+
