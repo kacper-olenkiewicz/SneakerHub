@@ -84,8 +84,7 @@ cd sneakerhub/projekt
 npm install
 
 # 3. Skonfiguruj zmienne środowiskowe
-cp .env.example .env
-# Edytuj .env i ustaw DATABASE_URL
+Utwórz plik .env i ustaw DATABASE_URL
 ```
 
 ```env
