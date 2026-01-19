@@ -43,10 +43,11 @@ export async function POST(request) {
 
     // Return user data (without password)
     const { passwordHash: _, ...userWithoutPassword } = user;
+    const sessionUser = { ...userWithoutPassword, authProvider: 'local' };
 
     // Set httpOnly cookie with session data
     const cookieStore = await cookies();
-    cookieStore.set(SESSION_COOKIE_NAME, JSON.stringify(userWithoutPassword), {
+    cookieStore.set(SESSION_COOKIE_NAME, JSON.stringify(sessionUser), {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -57,7 +58,7 @@ export async function POST(request) {
     return NextResponse.json(
       { 
         message: 'Login successful',
-        user: userWithoutPassword
+        user: sessionUser
       },
       { status: 200 }
     );

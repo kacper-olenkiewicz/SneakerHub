@@ -205,6 +205,69 @@
   max-width: 40rem;
 }
 
+.passwordCard {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+  max-width: 40rem;
+}
+
+.passwordTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.passwordForm {
+  display: grid;
+  gap: 1rem;
+}
+
+.passwordField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.passwordField label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.passwordField input {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.passwordField input:focus {
+  border-color: #b91c1c;
+  box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.1);
+  outline: none;
+}
+
+
+.passwordButton {
+  margin-top: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.passwordButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .profileField {
   display: flex;
   flex-direction: column;

@@ -118,6 +118,14 @@ export default function LogIn() {
           </button>
         </form>
 
+        <div className={styles.divider}>
+          <span>or</span>
+        </div>
+
+        <Link href="/api/auth/google" className={styles.googleButton}>
+          Continue with Google
+        </Link>
+
         <div className={styles.footer}>
           Don&apos;t have an account?
           <Link href="/register" className={styles.link}>

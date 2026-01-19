@@ -24,6 +24,13 @@ export default function UserDashboard() {
   const [loading, setLoading] = useState(true);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [orderFeedback, setOrderFeedback] = useState(null);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: ""
+  });
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [passwordFeedback, setPasswordFeedback] = useState(null);
 
   useEffect(() => {
     // Fetch session from API (httpOnly cookie)
@@ -69,6 +76,12 @@ export default function UserDashboard() {
     const timer = setTimeout(() => setOrderFeedback(null), 4000);
     return () => clearTimeout(timer);
   }, [orderFeedback]);
+
+  useEffect(() => {
+    if (!passwordFeedback) return;
+    const timer = setTimeout(() => setPasswordFeedback(null), 4000);
+    return () => clearTimeout(timer);
+  }, [passwordFeedback]);
 
   const fetchOrders = async (userId) => {
     try {
@@ -150,6 +163,53 @@ export default function UserDashboard() {
       setOrderFeedback({ type: 'error', message: 'Could not place order. Please try again.' });
     } finally {
       setCheckoutLoading(false);
+    }
+  };
+
+  const handlePasswordChange = async (event) => {
+    event.preventDefault();
+
+    if (!passwordForm.newPassword || !passwordForm.confirmPassword) {
+      setPasswordFeedback({ type: 'error', message: 'New password and confirmation are required.' });
+      return;
+    }
+
+    if (passwordForm.newPassword.length < 6) {
+      setPasswordFeedback({ type: 'error', message: 'New password must be at least 6 characters.' });
+      return;
+    }
+
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      setPasswordFeedback({ type: 'error', message: 'New passwords do not match.' });
+      return;
+    }
+
+    setPasswordLoading(true);
+    setPasswordFeedback({ type: 'info', message: 'Updating password...' });
+
+    try {
+      const response = await fetch('/api/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          newPassword: passwordForm.newPassword
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update password');
+      }
+
+      setPasswordFeedback({ type: 'success', message: 'Password updated successfully.' });
+      setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" });
+    } catch (error) {
+      setPasswordFeedback({ type: 'error', message: error.message || 'Failed to update password.' });
+    } finally {
+      setPasswordLoading(false);
     }
   };
 
@@ -250,6 +310,54 @@ export default function UserDashboard() {
               <label>Member Since</label>
               <p>{new Date(user.createdAt).toLocaleDateString()}</p>
             </div>
+          </div>
+
+          <div className={styles.passwordCard}>
+            <h3 className={styles.passwordTitle}>Change Password</h3>
+
+            {passwordFeedback && (
+              <div
+                className={`${styles.feedback} ${
+                  passwordFeedback.type === 'error'
+                    ? styles.feedbackError
+                    : passwordFeedback.type === 'success'
+                    ? styles.feedbackSuccess
+                    : styles.feedbackInfo
+                }`}
+              >
+                {passwordFeedback.message}
+              </div>
+            )}
+
+            <form className={styles.passwordForm} onSubmit={handlePasswordChange}>
+              <div className={styles.passwordField}>
+                <label htmlFor="newPassword">New Password</label>
+                <input
+                  id="newPassword"
+                  type="password"
+                  value={passwordForm.newPassword}
+                  onChange={(event) =>
+                    setPasswordForm((prev) => ({ ...prev, newPassword: event.target.value }))
+                  }
+                  required
+                />
+              </div>
+              <div className={styles.passwordField}>
+                <label htmlFor="confirmPassword">Confirm New Password</label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  value={passwordForm.confirmPassword}
+                  onChange={(event) =>
+                    setPasswordForm((prev) => ({ ...prev, confirmPassword: event.target.value }))
+                  }
+                  required
+                />
+              </div>
+              <button className={styles.passwordButton} type="submit" disabled={passwordLoading}>
+                {passwordLoading ? 'Updating...' : 'Update Password'}
+              </button>
+            </form>
           </div>
         </div>
       )}
