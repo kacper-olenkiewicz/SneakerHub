@@ -77,7 +77,7 @@ SneakerHub to kompletna aplikacja e-commerce zbudowana w **Next.js 16 App Router
 
 ```bash
 # 1. Sklonuj repozytorium
-git clone https://github.com/your-username/sneakerhub.git
+git clone https://github.com/kacper-olenkiewicz/sneakerhub.git
 cd sneakerhub/projekt
 
 # 2. Zainstaluj zależności
